@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
 
-    <!-- Responsividade -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="CP Calculator - Calculadora moderna criada por Cipriano">
+    <meta name="description"
+        content="CP Calculator - Calculadora moderna criada por Cipriano">
 
     <title>CP Calculator</title>
 
@@ -32,6 +32,7 @@
         body {
             background: #000;
             color: white;
+
             font-family: Arial, Helvetica, sans-serif;
 
             display: flex;
@@ -45,7 +46,7 @@
 
 
         /* ==============================
-           CONTAINER PRINCIPAL
+           CONTAINER
         ============================== */
 
         .conteiner {
@@ -108,6 +109,7 @@
 
         .logo {
             width: clamp(90px, 18vw, 150px);
+
             height: auto;
 
             display: block;
@@ -126,7 +128,9 @@
         }
 
 
-        /* Nome da calculadora */
+        /* ==============================
+           TÍTULO
+        ============================== */
 
         .titulo {
             margin-top: 10px;
@@ -173,8 +177,6 @@
         }
 
 
-        /* Expressão */
-
         .calculo {
             color: #111;
 
@@ -187,8 +189,6 @@
             min-height: 40px;
         }
 
-
-        /* Resultado */
 
         .resultado {
             color: #000;
@@ -223,8 +223,6 @@
         }
 
 
-        /* Botões */
-
         button {
             width: 100%;
 
@@ -257,8 +255,6 @@
         }
 
 
-        /* Efeito ao passar o mouse */
-
         button:hover {
             filter: brightness(1.15);
 
@@ -267,15 +263,13 @@
         }
 
 
-        /* Efeito ao clicar */
-
         button:active {
             transform: scale(0.92);
         }
 
 
         /* ==============================
-           BOTÕES ESPECIAIS
+           BOTÕES DE OPERAÇÃO
         ============================== */
 
         .operador {
@@ -286,6 +280,10 @@
             );
         }
 
+
+        /* ==============================
+           BOTÃO IGUAL
+        ============================== */
 
         .igual {
             background: linear-gradient(
@@ -299,6 +297,10 @@
         }
 
 
+        /* ==============================
+           BOTÃO C
+        ============================== */
+
         .limpar {
             background: linear-gradient(
                 145deg,
@@ -310,6 +312,10 @@
         }
 
 
+        /* ==============================
+           BOTÃO APAGAR
+        ============================== */
+
         .apagar {
             background: linear-gradient(
                 145deg,
@@ -318,6 +324,35 @@
             );
 
             border: 2px solid #008cff;
+        }
+
+
+        /* ==============================
+           BOTÃO f-CP
+        ============================== */
+
+        .fcp {
+            background: linear-gradient(
+                145deg,
+                #ff8c00,
+                #ff4500
+            );
+
+            color: white;
+
+            font-size: clamp(16px, 3vw, 23px);
+        }
+
+
+        .fcp:hover {
+            background: linear-gradient(
+                145deg,
+                #ff9d22,
+                #ff5500
+            );
+
+            box-shadow:
+                0 0 20px rgba(255, 100, 0, 0.65);
         }
 
 
@@ -337,6 +372,7 @@
 
         .rodape span {
             color: #0099ff;
+
             font-weight: bold;
         }
 
@@ -369,6 +405,7 @@
 
             button {
                 min-height: 65px;
+
                 border-radius: 17px;
             }
         }
@@ -480,7 +517,7 @@
 
 
             <!-- ==========================
-                 TELA DA CALCULADORA
+                 TELA
             =========================== -->
 
             <div class="tela">
@@ -622,11 +659,13 @@
                     =
                 </button>
 
+                <!-- f-CP -->
+
                 <button
-                    class="operador"
-                    onclick="operacao('+')"
+                    class="fcp"
+                    onclick="mensagemCP()"
                 >
-                    +
+                    f-CP
                 </button>
 
             </div>
@@ -643,15 +682,11 @@
     </div>
 
 
-    <!-- ==============================
-         JAVASCRIPT
-    ============================== -->
-
     <script>
 
-        /* =================================
+        /* ==============================
            VARIÁVEIS
-        ================================= */
+        ============================== */
 
         let numeroAtual = "";
 
@@ -662,9 +697,9 @@
         let novoNumero = true;
 
 
-        /* =================================
+        /* ==============================
            ELEMENTOS DA TELA
-        ================================= */
+        ============================== */
 
         const calculo =
             document.getElementById("calculo");
@@ -673,9 +708,9 @@
             document.getElementById("resultado");
 
 
-        /* =================================
+        /* ==============================
            ESCREVER NÚMERO
-        ================================= */
+        ============================== */
 
         function escrever(numero) {
 
@@ -693,22 +728,23 @@
                 numero === "." &&
                 numeroAtual.includes(".")
             ) {
+
                 return;
             }
 
 
-            /* Não começar com vários zeros */
+            /* Impedir vários zeros */
 
             if (
                 numero === "0" &&
                 numeroAtual === "0"
             ) {
+
                 return;
             }
 
 
-            /* Se começar com ponto,
-               transforma em 0. */
+            /* Começar com ponto */
 
             if (
                 numero === "." &&
@@ -725,14 +761,13 @@
             calculo.textContent =
                 numeroAtual;
 
-
             resultado.textContent = "";
         }
 
 
-        /* =================================
-           ESCOLHER OPERAÇÃO
-        ================================= */
+        /* ==============================
+           OPERAÇÕES
+        ============================== */
 
         function operacao(op) {
 
@@ -742,7 +777,8 @@
             }
 
 
-            numeroAnterior = numeroAtual;
+            numeroAnterior =
+                numeroAtual;
 
             operador = op;
 
@@ -750,15 +786,17 @@
 
 
             calculo.textContent =
-                numeroAnterior + " " + operador;
+                numeroAnterior +
+                " " +
+                operador;
 
             resultado.textContent = "";
         }
 
 
-        /* =================================
+        /* ==============================
            CALCULAR
-        ================================= */
+        ============================== */
 
         function calcular() {
 
@@ -781,16 +819,12 @@
             let resultadoFinal;
 
 
-            /* Soma */
-
             if (operador === "+") {
 
                 resultadoFinal =
                     numero1 + numero2;
             }
 
-
-            /* Subtração */
 
             else if (operador === "-") {
 
@@ -799,16 +833,12 @@
             }
 
 
-            /* Multiplicação */
-
             else if (operador === "×") {
 
                 resultadoFinal =
                     numero1 * numero2;
             }
 
-
-            /* Divisão */
 
             else if (operador === "÷") {
 
@@ -837,16 +867,12 @@
             }
 
 
-            /* Porcentagem */
-
             else if (operador === "%") {
 
                 resultadoFinal =
                     numero1 * (numero2 / 100);
             }
 
-
-            /* Mostrar operação */
 
             calculo.textContent =
                 numeroAnterior +
@@ -857,13 +883,9 @@
                 " =";
 
 
-            /* Mostrar resultado */
-
             resultado.textContent =
                 resultadoFinal;
 
-
-            /* Preparar próxima operação */
 
             numeroAtual =
                 resultadoFinal.toString();
@@ -876,9 +898,9 @@
         }
 
 
-        /* =================================
-           APAGAR ÚLTIMO CARACTERE
-        ================================= */
+        /* ==============================
+           APAGAR
+        ============================== */
 
         function apagar() {
 
@@ -905,9 +927,9 @@
         }
 
 
-        /* =================================
-           LIMPAR CALCULADORA
-        ================================= */
+        /* ==============================
+           LIMPAR
+        ============================== */
 
         function limpar() {
 
@@ -926,9 +948,23 @@
         }
 
 
-        /* =================================
-           TECLADO DO COMPUTADOR
-        ================================= */
+        /* ==============================
+           BOTÃO f-CP
+        ============================== */
+
+        function mensagemCP() {
+
+            calculo.textContent = "f-CP";
+
+            resultado.textContent =
+                "O CP é chato 🔥😂";
+
+        }
+
+
+        /* ==============================
+           TECLADO DO PC
+        ============================== */
 
         document.addEventListener(
             "keydown",
