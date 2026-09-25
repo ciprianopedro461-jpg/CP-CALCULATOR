@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Responsividade -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="CP Calculator - Calculadora moderna criada por Cipriano">
+
+    <title>CP Calculator</title>
+
+    <style>
+
+        /* ==============================
+           CONFIGURAÇÕES GERAIS
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            background: #000;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ==============================
+           CONTAINER PRINCIPAL
+        ============================== */
+
+        .conteiner {
+            width: 100%;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+
+        /* ==============================
+           CALCULADORA
+        ============================== */
+
+        .retangulo {
+            width: 100%;
+            max-width: 900px;
+
+            min-height: 700px;
+
+            background: linear-gradient(
+                145deg,
+                #020202,
+                #080808
+            );
+
+            border: 2px solid #003cff;
+
+            border-radius: 35px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            padding: 30px;
+
+            box-shadow:
+                0 0 25px rgba(0, 60, 255, 0.25),
+                inset 0 0 30px rgba(0, 60, 255, 0.05);
+        }
+
+
+        /* ==============================
+           LOGO
+        ============================== */
+
+        .logo-area {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            width: clamp(90px, 18vw, 150px);
+            height: auto;
+
+            display: block;
+
+            object-fit: contain;
+
+            filter:
+                drop-shadow(0 0 10px rgba(0, 153, 255, 0.6))
+                drop-shadow(0 0 25px rgba(0, 60, 255, 0.3));
+
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+
+        /* Nome da calculadora */
+
+        .titulo {
+            margin-top: 10px;
+
+            font-size: clamp(22px, 5vw, 38px);
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+
+            text-align: center;
+        }
+
+        .titulo .cp {
+            color: #0099ff;
+        }
+
+
+        /* ==============================
+           TELA
+        ============================== */
+
+        .tela {
+            width: 100%;
+            max-width: 800px;
+
+            min-height: 180px;
+
+            background: white;
+
+            border-radius: 25px;
+
+            border: 3px solid #008cff;
+
+            padding: 20px;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 0 15px rgba(0, 153, 255, 0.5);
+        }
+
+
+        /* Expressão */
+
+        .calculo {
+            color: #111;
+
+            font-size: clamp(20px, 4vw, 32px);
+
+            text-align: right;
+
+            word-break: break-word;
+
+            min-height: 40px;
+        }
+
+
+        /* Resultado */
+
+        .resultado {
+            color: #000;
+
+            font-size: clamp(35px, 7vw, 55px);
+
+            font-weight: bold;
+
+            text-align: right;
+
+            word-break: break-word;
+
+            margin-top: auto;
+        }
+
+
+        /* ==============================
+           BOTÕES
+        ============================== */
+
+        .botoes {
+            width: 100%;
+            max-width: 770px;
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+
+        /* Botões */
+
+        button {
+            width: 100%;
+
+            min-height: 75px;
+
+            border: none;
+
+            border-radius: 20px;
+
+            background: linear-gradient(
+                145deg,
+                #0099ff,
+                #0055ff
+            );
+
+            color: white;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            font-size: clamp(18px, 3vw, 25px);
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.12s ease,
+                box-shadow 0.12s ease,
+                filter 0.12s ease;
+        }
+
+
+        /* Efeito ao passar o mouse */
+
+        button:hover {
+            filter: brightness(1.15);
+
+            box-shadow:
+                0 0 15px rgba(0, 153, 255, 0.45);
+        }
+
+
+        /* Efeito ao clicar */
+
+        button:active {
+            transform: scale(0.92);
+        }
+
+
+        /* ==============================
+           BOTÕES ESPECIAIS
+        ============================== */
+
+        .operador {
+            background: linear-gradient(
+                145deg,
+                #0066ff,
+                #0033cc
+            );
+        }
+
+
+        .igual {
+            background: linear-gradient(
+                145deg,
+                #00c8ff,
+                #0077ff
+            );
+
+            box-shadow:
+                0 0 15px rgba(0, 200, 255, 0.35);
+        }
+
+
+        .limpar {
+            background: linear-gradient(
+                145deg,
+                #222,
+                #111
+            );
+
+            border: 2px solid #008cff;
+        }
+
+
+        .apagar {
+            background: linear-gradient(
+                145deg,
+                #222,
+                #111
+            );
+
+            border: 2px solid #008cff;
+        }
+
+
+        /* ==============================
+           RODAPÉ
+        ============================== */
+
+        .rodape {
+            margin-top: 25px;
+
+            color: #666;
+
+            font-size: 13px;
+
+            text-align: center;
+        }
+
+        .rodape span {
+            color: #0099ff;
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           TABLET
+        ============================== */
+
+        @media (max-width: 768px) {
+
+            .conteiner {
+                padding: 15px;
+            }
+
+            .retangulo {
+                min-height: auto;
+
+                padding: 25px 18px;
+
+                border-radius: 28px;
+            }
+
+            .tela {
+                min-height: 160px;
+            }
+
+            .botoes {
+                gap: 9px;
+            }
+
+            button {
+                min-height: 65px;
+                border-radius: 17px;
+            }
+        }
+
+
+        /* ==============================
+           TELEMÓVEL
+        ============================== */
+
+        @media (max-width: 480px) {
+
+            .conteiner {
+                padding: 10px;
+            }
+
+            .retangulo {
+                padding: 20px 12px;
+
+                border-radius: 22px;
+            }
+
+            .logo-area {
+                margin-bottom: 18px;
+            }
+
+            .tela {
+                min-height: 145px;
+
+                padding: 15px;
+
+                border-radius: 20px;
+            }
+
+            .botoes {
+                gap: 7px;
+
+                margin-top: 20px;
+            }
+
+            button {
+                min-height: 60px;
+
+                border-radius: 15px;
+            }
+
+            .rodape {
+                margin-top: 18px;
+            }
+        }
+
+
+        /* ==============================
+           TELEMÓVEIS PEQUENOS
+        ============================== */
+
+        @media (max-width: 350px) {
+
+            .retangulo {
+                padding: 15px 8px;
+            }
+
+            .tela {
+                min-height: 130px;
+            }
+
+            .botoes {
+                gap: 5px;
+            }
+
+            button {
+                min-height: 52px;
+
+                border-radius: 12px;
+            }
+
+            .rodape {
+                font-size: 11px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="conteiner">
+
+        <main class="retangulo">
+
+
+            <!-- ==========================
+                 LOGO
+            =========================== -->
+
+            <div class="logo-area">
+
+                <img
+                    src="cp-logo.png"
+                    alt="Logo CP"
+                    class="logo"
+                >
+
+                <h1 class="titulo">
+                    <span class="cp">CP</span> Calculator
+                </h1>
+
+            </div>
+
+
+            <!-- ==========================
+                 TELA DA CALCULADORA
+            =========================== -->
+
+            <div class="tela">
+
+                <p
+                    class="calculo"
+                    id="calculo"
+                >
+                    0
+                </p>
+
+                <p
+                    class="resultado"
+                    id="resultado"
+                >
+                    0
+                </p>
+
+            </div>
+
+
+            <!-- ==========================
+                 BOTÕES
+            =========================== -->
+
+            <div class="botoes">
+
+                <!-- Linha 1 -->
+
+                <button
+                    class="limpar"
+                    onclick="limpar()"
+                >
+                    C
+                </button>
+
+                <button
+                    class="apagar"
+                    onclick="apagar()"
+                >
+                    ⌫
+                </button>
+
+                <button
+                    class="operador"
+                    onclick="operacao('%')"
+                >
+                    %
+                </button>
+
+                <button
+                    class="operador"
+                    onclick="operacao('÷')"
+                >
+                    ÷
+                </button>
+
+
+                <!-- Linha 2 -->
+
+                <button onclick="escrever('7')">
+                    7
+                </button>
+
+                <button onclick="escrever('8')">
+                    8
+                </button>
+
+                <button onclick="escrever('9')">
+                    9
+                </button>
+
+                <button
+                    class="operador"
+                    onclick="operacao('×')"
+                >
+                    ×
+                </button>
+
+
+                <!-- Linha 3 -->
+
+                <button onclick="escrever('4')">
+                    4
+                </button>
+
+                <button onclick="escrever('5')">
+                    5
+                </button>
+
+                <button onclick="escrever('6')">
+                    6
+                </button>
+
+                <button
+                    class="operador"
+                    onclick="operacao('-')"
+                >
+                    −
+                </button>
+
+
+                <!-- Linha 4 -->
+
+                <button onclick="escrever('1')">
+                    1
+                </button>
+
+                <button onclick="escrever('2')">
+                    2
+                </button>
+
+                <button onclick="escrever('3')">
+                    3
+                </button>
+
+                <button
+                    class="operador"
+                    onclick="operacao('+')"
+                >
+                    +
+                </button>
+
+
+                <!-- Linha 5 -->
+
+                <button onclick="escrever('0')">
+                    0
+                </button>
+
+                <button onclick="escrever('.')">
+                    .
+                </button>
+
+                <button
+                    class="igual"
+                    onclick="calcular()"
+                >
+                    =
+                </button>
+
+                <button
+                    class="operador"
+                    onclick="operacao('+')"
+                >
+                    +
+                </button>
+
+            </div>
+
+
+            <!-- Rodapé -->
+
+            <p class="rodape">
+                Desenvolvido por <span>CP</span>
+            </p>
+
+        </main>
+
+    </div>
+
+
+    <!-- ==============================
+         JAVASCRIPT
+    ============================== -->
+
+    <script>
+
+        /* =================================
+           VARIÁVEIS
+        ================================= */
+
+        let numeroAtual = "";
+
+        let numeroAnterior = "";
+
+        let operador = "";
+
+        let novoNumero = true;
+
+
+        /* =================================
+           ELEMENTOS DA TELA
+        ================================= */
+
+        const calculo =
+            document.getElementById("calculo");
+
+        const resultado =
+            document.getElementById("resultado");
+
+
+        /* =================================
+           ESCREVER NÚMERO
+        ================================= */
+
+        function escrever(numero) {
+
+            if (novoNumero) {
+
+                numeroAtual = "";
+
+                novoNumero = false;
+            }
+
+
+            /* Impedir dois pontos */
+
+            if (
+                numero === "." &&
+                numeroAtual.includes(".")
+            ) {
+                return;
+            }
+
+
+            /* Não começar com vários zeros */
+
+            if (
+                numero === "0" &&
+                numeroAtual === "0"
+            ) {
+                return;
+            }
+
+
+            /* Se começar com ponto,
+               transforma em 0. */
+
+            if (
+                numero === "." &&
+                numeroAtual === ""
+            ) {
+
+                numeroAtual = "0";
+            }
+
+
+            numeroAtual += numero;
+
+
+            calculo.textContent =
+                numeroAtual;
+
+
+            resultado.textContent = "";
+        }
+
+
+        /* =================================
+           ESCOLHER OPERAÇÃO
+        ================================= */
+
+        function operacao(op) {
+
+            if (numeroAtual === "") {
+
+                return;
+            }
+
+
+            numeroAnterior = numeroAtual;
+
+            operador = op;
+
+            novoNumero = true;
+
+
+            calculo.textContent =
+                numeroAnterior + " " + operador;
+
+            resultado.textContent = "";
+        }
+
+
+        /* =================================
+           CALCULAR
+        ================================= */
+
+        function calcular() {
+
+            if (
+                numeroAnterior === "" ||
+                numeroAtual === "" ||
+                operador === ""
+            ) {
+
+                return;
+            }
+
+
+            let numero1 =
+                Number(numeroAnterior);
+
+            let numero2 =
+                Number(numeroAtual);
+
+            let resultadoFinal;
+
+
+            /* Soma */
+
+            if (operador === "+") {
+
+                resultadoFinal =
+                    numero1 + numero2;
+            }
+
+
+            /* Subtração */
+
+            else if (operador === "-") {
+
+                resultadoFinal =
+                    numero1 - numero2;
+            }
+
+
+            /* Multiplicação */
+
+            else if (operador === "×") {
+
+                resultadoFinal =
+                    numero1 * numero2;
+            }
+
+
+            /* Divisão */
+
+            else if (operador === "÷") {
+
+                if (numero2 === 0) {
+
+                    resultado.textContent =
+                        "Erro";
+
+                    calculo.textContent =
+                        "Não é possível dividir por 0";
+
+                    numeroAtual = "";
+
+                    numeroAnterior = "";
+
+                    operador = "";
+
+                    novoNumero = true;
+
+                    return;
+                }
+
+
+                resultadoFinal =
+                    numero1 / numero2;
+            }
+
+
+            /* Porcentagem */
+
+            else if (operador === "%") {
+
+                resultadoFinal =
+                    numero1 * (numero2 / 100);
+            }
+
+
+            /* Mostrar operação */
+
+            calculo.textContent =
+                numeroAnterior +
+                " " +
+                operador +
+                " " +
+                numeroAtual +
+                " =";
+
+
+            /* Mostrar resultado */
+
+            resultado.textContent =
+                resultadoFinal;
+
+
+            /* Preparar próxima operação */
+
+            numeroAtual =
+                resultadoFinal.toString();
+
+            numeroAnterior = "";
+
+            operador = "";
+
+            novoNumero = true;
+        }
+
+
+        /* =================================
+           APAGAR ÚLTIMO CARACTERE
+        ================================= */
+
+        function apagar() {
+
+            if (novoNumero) {
+
+                return;
+            }
+
+
+            numeroAtual =
+                numeroAtual.slice(0, -1);
+
+
+            if (numeroAtual === "") {
+
+                calculo.textContent = "0";
+
+                return;
+            }
+
+
+            calculo.textContent =
+                numeroAtual;
+        }
+
+
+        /* =================================
+           LIMPAR CALCULADORA
+        ================================= */
+
+        function limpar() {
+
+            numeroAtual = "";
+
+            numeroAnterior = "";
+
+            operador = "";
+
+            novoNumero = true;
+
+
+            calculo.textContent = "0";
+
+            resultado.textContent = "0";
+        }
+
+
+        /* =================================
+           TECLADO DO COMPUTADOR
+        ================================= */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                const tecla = event.key;
+
+
+                /* Números */
+
+                if (
+                    tecla >= "0" &&
+                    tecla <= "9"
+                ) {
+
+                    escrever(tecla);
+                }
+
+
+                /* Ponto */
+
+                else if (
+                    tecla === "." ||
+                    tecla === ","
+                ) {
+
+                    escrever(".");
+                }
+
+
+                /* Soma */
+
+                else if (tecla === "+") {
+
+                    operacao("+");
+                }
+
+
+                /* Subtração */
+
+                else if (tecla === "-") {
+
+                    operacao("-");
+                }
+
+
+                /* Multiplicação */
+
+                else if (tecla === "*") {
+
+                    operacao("×");
+                }
+
+
+                /* Divisão */
+
+                else if (tecla === "/") {
+
+                    operacao("÷");
+                }
+
+
+                /* Enter */
+
+                else if (
+                    tecla === "Enter" ||
+                    tecla === "="
+                ) {
+
+                    calcular();
+                }
+
+
+                /* Backspace */
+
+                else if (
+                    tecla === "Backspace"
+                ) {
+
+                    apagar();
+                }
+
+
+                /* Escape */
+
+                else if (
+                    tecla === "Escape"
+                ) {
+
+                    limpar();
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
